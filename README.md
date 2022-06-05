@@ -45,6 +45,8 @@ When Tina prompts to override your App component, reject by typing "n" (it's alr
 ✔ do you want us to override your _app.tsx? … no
 ```
 
+This command will generate some redundant files; feel free to remove them.
+
 Decorate the following commands with `--experimentalData` to enable querying and filtering your graphql content with Tina:
 
 ```
