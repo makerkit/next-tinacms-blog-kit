@@ -68,7 +68,7 @@ const schema = defineSchema({
           description: 'The post title, under 70 chars',
           ui: {
             validate: (value) => {
-              if (value.length > 70) {
+              if (value?.length > 70) {
                 return 'Title cannot be more than 70 characters long';
               }
             },
@@ -82,7 +82,7 @@ const schema = defineSchema({
           description: 'The post description, under 160 chars',
           ui: {
             validate: (value) => {
-              if (value.length > 160) {
+              if (value?.length > 160) {
                 return 'Description cannot be more than 160 characters long';
               }
             },

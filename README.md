@@ -75,6 +75,20 @@ yarn dev
 2. Visit [http://localhost:3000/admin](http://localhost:3000/admin) to access the Tina CMS admin
 3. Visit [http://localhost:4001/altair](http://localhost:4001/altair) to access the GraphqQL playground
 
+Remove `.tina` from the `.gitignore` file, and remember to check it in, so that your builds will be able to use the folder.
+
+#### Inline Tina Editor
+
+Because Tina lazy-loads the inline editor in production mode, **but does not disable it**, I thought the best compromise was to dynamicaly add the editor based on a variable.
+
+By default, the editor is loaded only if the URL contains a query parameter named `tina`. You can change this logic as you prefer in `_app.tsx`.
+
+#### Using Tina Cloud? 
+
+If you're also using Tina Cloud, remember to add the `NEXT_PUBLIC_TINA_CLIENT_ID` environment variable, either from a `.env` file or from your Vercel console (or other provider).
+
+You will find the Client ID environment variable in the [Tina CMS Dashboard](https://tina.io/docs/tina-cloud/dashboard/).
+
 ### Setting the upstream folder
 
 If you want, reinitialize the git repository and set this repository as your upstream, so you can continue getting updates:

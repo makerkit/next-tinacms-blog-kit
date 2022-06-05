@@ -3,9 +3,6 @@ const plugin = require('tailwindcss/plugin');
 module.exports = {
   content: ['./**/*.tsx'],
   darkMode: 'class',
-  corePlugins: {
-    container: false,
-  },
   theme: {
     extend: {
       colors: {
@@ -54,7 +51,7 @@ module.exports = {
       monospace: [`SF Mono`, `ui-monospace`, `Monaco`, 'Monospace'],
     },
   },
-  plugins: [customContainerPlugin, plugin(ellipisfyPlugin)],
+  plugins: [plugin(ellipisfyPlugin)],
 };
 
 function ellipisfyPlugin({ addUtilities }) {
@@ -67,17 +64,4 @@ function ellipisfyPlugin({ addUtilities }) {
   };
 
   addUtilities(styles);
-}
-
-function customContainerPlugin({ addComponents }) {
-  addComponents({
-    '.container': {
-      '@screen lg': {
-        maxWidth: '1024px',
-      },
-      '@screen xl': {
-        maxWidth: '1166px',
-      },
-    },
-  });
 }

@@ -10,7 +10,7 @@ const Post: React.FCC<{
 
   return (
     <div className={'mx-auto flex max-w-5xl space-x-6'}>
-      <div className={'w-8/12'}>
+      <div className={'w-full lg:w-8/12'}>
         <article className="mb-16">
           <PostHeader post={post} />
 
@@ -20,7 +20,7 @@ const Post: React.FCC<{
         </article>
       </div>
 
-      <div className={'w-4/12 border-l border-l-gray-100'}></div>
+      <div className={'hidden lg:block w-4/12 border-l border-l-gray-100'}></div>
     </div>
   );
 };
