@@ -21,6 +21,7 @@ const POST_FRAGMENT = gql`
       ... on Authors {
         name
         url
+        picture
         _sys {
           filename
         }

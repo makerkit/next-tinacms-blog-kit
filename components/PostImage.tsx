@@ -19,13 +19,14 @@ const PostImage = ({
 }: Props) => {
   return (
     <Image
-      layout={'responsive'}
+      objectFit={'cover'}
+      layout={'fill'}
       className={`rounded-t-lg shadow-xl ${className}`}
       src={src}
       priority={preloadImage}
       alt={`Cover Image for ${title}`}
-      width={width ?? 16}
-      height={height ?? 9}
+      width={width}
+      height={height}
     />
   );
 };

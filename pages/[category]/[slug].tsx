@@ -44,7 +44,6 @@ const PostPage = (props: Props) => {
 
       <LayoutContainer>
         <PostHead post={post} />
-
         <Post post={post} />
 
         <div className={'mx-auto mt-8 flex max-w-5xl flex-col space-y-8 pb-32'}>

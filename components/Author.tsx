@@ -3,23 +3,28 @@ import AuthorType from '~/lib/blog/author';
 
 const Author: React.FCC<{ author: AuthorType }> = ({ author }) => {
   const alt = `${author.name}'s picture`;
-  const imageSize = `45px`;
+  const imageSize = `36px`;
 
   return (
-    <div className="flex flex-row items-center space-x-3">
-      <a target="_blank" rel="noreferrer noopened" href={author.url}>
-        {author.picture ? (
-          <Image
-            width={imageSize}
-            height={imageSize}
-            src={author.picture}
-            alt={alt}
-          />
-        ) : null}
+    <a
+      className={'flex items-center space-x-2 hover:underline'}
+      target="_blank"
+      rel="noreferrer noopened"
+      href={author.url}
+    >
+      {author.picture ? (
+        <Image
+          objectFit={'cover'}
+          className={'rounded-full'}
+          width={imageSize}
+          height={imageSize}
+          src={author.picture}
+          alt={alt}
+        />
+      ) : null}
 
-        <span>{author.name}</span>
-      </a>
-    </div>
+      <span>Written by {author.name}</span>
+    </a>
   );
 };
 

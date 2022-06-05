@@ -9,7 +9,7 @@ const PostHeader: React.FCC<{
 }> = ({ post }) => {
   return (
     <>
-      <div className={'mt-4 mt-6 text-sm'}>
+      <div className={'mt-2 text-sm'}>
         <CategoryLink category={post.category} />
       </div>
 
@@ -23,9 +23,9 @@ const PostHeader: React.FCC<{
         <PostMetadata post={post} />
       </div>
 
-      <div className="mx-auto justify-center">
+      <div className="mx-auto justify-center relative">
         <PostImage
-          className={'rounded-lg'}
+          className={'rounded-lg h-[26rem]'}
           preloadImage={true}
           title={post.title}
           src={post.image}

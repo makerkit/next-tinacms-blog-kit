@@ -1,10 +1,10 @@
 import type { AppProps } from 'next/app';
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic';
 
 import '../styles/globals.css';
 
 import ThemeProvider from '~/components/ThemeProvider';
-import { isBrowser } from "~/lib/is-browser";
+import { isBrowser } from '~/lib/is-browser';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,27 +17,24 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 function TinaWrapper(props: React.PropsWithChildren<{}>) {
-  if (!isBrowser()) {
-    return <>{props.children}</>;
-  }
-
-  const useTina = shouldUseTinaEditor();
-
-  if (useTina) {
-    const Tina = dynamic(()=> import('../.tina/components/TinaDynamicProvider'));
-
-    return  (
-      <Tina>
-        {props.children}
-      </Tina>
+  if (shouldUseTinaEditor()) {
+    const Tina = dynamic(
+      () => import('../.tina/components/TinaDynamicProvider'),
+      {
+        ssr: false,
+      }
     );
+
+    return <Tina>{props.children}</Tina>;
   }
 
   return <>{props.children}</>;
 }
 
 function shouldUseTinaEditor() {
-  return new URLSearchParams(window.location.search).has('tina');
+  return isBrowser()
+    ? new URLSearchParams(window.location.search).has('tina')
+    : true;
 }
 
 export default MyApp;
