@@ -48,10 +48,16 @@ When Tina prompts to override your App component, reject by typing "n" (it's alr
 Decorate the following commands with `--experimentalData` to enable querying and filtering your graphql content with Tina:
 
 ```
-"dev": "tinacms server:start -c \"next dev\" --experimentalData",
+"dev": "NODE_ENV=development tinacms server:start -c \"next dev\" --experimentalData",
 "build": "tinacms server:start -c \"next build\" --experimentalData",
 "start": "tinacms server:start -c \"next start\" --experimentalData",
 ```
+
+NB: do not forget to prefix the `dev` command with `NODE_ENV=development`.
+
+#### Setting up the Tina CMS schema
+
+Copy the contents of the file `schema.template` and override the content of `schema.ts`. Tina CMS will initialize the correct GraphQL schema based on the schema we provided.
 
 ### Run the application
 
@@ -60,7 +66,7 @@ Then, run the development server:
 ```bash
 npm run dev
 # or
-yarn devs
+yarn dev
 ```
 
 1. Visit [http://localhost:3000](http://localhost:3000) to see your blog
