@@ -6,13 +6,14 @@ This Blog Starter is the perfect foundation for writing your next blog, portfoli
 
 ## Features
 
-- ✅ **Fully responsive Blog/Portfolio Site**
+- ✅ **Responsive, fast and ready-to-deploy Next.js Blog Starter**
 - 📄 **Write your articles with all the power of Tina CMS and MDX**
 -  ⚡ **Live-reloading MDX content**
 - 🚀 **Search Engine Optimized (SEO) out-of-the-box**
 - 📂 **Sitemap and RSS generated automatically**
 - 🎨 **Dark and Light themes**
 - ✨ **Written with strict Typescript, validated with EsLint, formatted with Prettier**
+- 👨‍💻 **Developed, maintained and used by [Makerkit](https://makerkit.dev)**
 
 ## Getting Started
 
@@ -22,7 +23,20 @@ Clone the repository:
 git clone https://github.com/makerkit/next-tinacms-blog-kit
 ```
 
-Rename your project and jump into the folder. Then, run the development server:
+Initialize [Tina CMS](https://tina.io/) with the following command:
+
+```
+npx @tinacms/cli@latest init
+```
+
+When Tina prompts to override your App component, reject by typing "n" (it's already set up):
+```
+✔ do you want us to override your _app.tsx? … no
+```
+
+Rename your project and jump into the folder. 
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -30,7 +44,9 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Open [http://localhost:3000](http://localhost:3000) with your browser to see your blog
+- Open [http://localhost:3000/admin](http://localhost:3000/admin) to access the Tina CMS admin
+- Open [http://localhost:4001/altair](http://localhost:4001/altair) to access the GraphqQL playground
 
 ### Setting the upstream folder
 
@@ -39,7 +55,7 @@ If you want, reinitialize the git repository and set this repository as your ups
 ```
 rm -rf .git
 git init
-git remote add upstream https://github.com/makerkit/next-blog-kit
+git remote add upstream https://github.com/makerkit/next-tinacms-blog-kit
 ```
 
 To keep your repository up-to-date with this, use `git pull`:
@@ -128,8 +144,7 @@ amarunt dicta."
 ---
 ```
 
-As you can see, the p## Building this from scratch
-roperties `category` and `author` are references to the path of each.
+As you can see, the properties `category` and `author` are references to the path of each.
 
 ## Deploy on Vercel
 
