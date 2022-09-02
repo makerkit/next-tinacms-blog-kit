@@ -1,59 +1,61 @@
+import { useEffect, useState } from 'react';
+
 import { gql, staticRequest } from 'tinacms';
-import { useTina } from 'tinacms/dist/edit-state';
+import shouldUseTinaEditor from '~/lib/should-use-tina-editor';
 
 import Post from '~/lib/blog/blog-post';
 import Category from '~/lib/blog/category';
 
 const POST_FRAGMENT = gql`
-  fragment PostFragment on Posts {
-    id
-    title
-    content
-    live
-    date
-    description
-    image
-    tags
-    _sys {
-      filename
-    }
-    author {
-      ... on Authors {
-        name
-        url
-        picture
+    fragment PostFragment on Posts {
+        id
+        title
+        content
+        live
+        date
+        description
+        image
+        tags
         _sys {
-          filename
+            filename
         }
-      }
-    }
-    category {
-      ... on Categories {
-        name
-        _sys {
-          filename
+        author {
+            ... on Authors {
+                name
+                url
+                picture
+                _sys {
+                    filename
+                }
+            }
         }
-      }
+        category {
+            ... on Categories {
+                name
+                _sys {
+                    filename
+                }
+            }
+        }
     }
-  }
 `;
 
 export async function getPost(params: { slug: string }) {
-  const postsListData = (await staticRequest({
-    variables: {
-      relativePath: params.slug,
-    },
-    query: gql`
-      ${POST_FRAGMENT}
-      query PostQuery($relativePath: String!) {
-        posts(relativePath: $relativePath) {
-          ...PostFragment
-        }
-      }
-    `,
-  })) as {
-    posts: Post & { id: string };
-  };
+    const postsListData = (await staticRequest({
+      variables: {
+        relativePath: params.slug,
+      },
+        query: gql`
+            ${POST_FRAGMENT}
+            query PostQuery($relativePath: String!) {
+                posts(relativePath: $relativePath) {
+                    ...PostFragment
+                }
+            }
+        `,
+    })) as {
+      posts: Post & { id: string };
+    };
 
   return postMapper({
     node: postsListData.posts,
@@ -66,24 +68,26 @@ export function useContextualGetPost(
   },
   data: Post
 ) {
-  const result = useTina<{
-    posts: Post;
-  }>({
-    variables: {
-      relativePath: params.slug,
-    },
-    query: gql`
-      ${POST_FRAGMENT}
-      query PostQuery($relativePath: String!) {
-        posts(relativePath: $relativePath) {
-          ...PostFragment
-        }
-      }
-    `,
-    data: {
-      posts: data,
-    },
-  });
+  const useTina = useLoadTina();
+
+    const result = useTina<{
+      posts: Post;
+    }>({
+      variables: {
+        relativePath: params.slug,
+      },
+        query: gql`
+            ${POST_FRAGMENT}
+            query PostQuery($relativePath: String!) {
+                posts(relativePath: $relativePath) {
+                    ...PostFragment
+                }
+            }
+        `,
+      data: {
+        posts: data,
+      },
+    });
 
   if (result.isLoading || !result.data) {
     return;
@@ -95,21 +99,21 @@ export function useContextualGetPost(
 }
 
 export async function getCategory(params: { slug: string }) {
-  const categoriesListData = (await staticRequest({
-    variables: {
-      relativePath: params.slug,
-    },
-    query: gql`
-      query CategoryQuery($relativePath: String!) {
-        categories(relativePath: $relativePath) {
-          id
-          name
-        }
-      }
-    `,
-  })) as {
-    categories: Category & { id: string };
-  };
+    const categoriesListData = (await staticRequest({
+      variables: {
+        relativePath: params.slug,
+      },
+        query: gql`
+            query CategoryQuery($relativePath: String!) {
+                categories(relativePath: $relativePath) {
+                    id
+                    name
+                }
+            }
+        `,
+    })) as {
+      categories: Category & { id: string };
+    };
 
   return categoriesListData.categories;
 }
@@ -126,50 +130,50 @@ export async function getPosts(params: {
 
   const categoryFilter = category
     ? {
-        category: { categories: { name: { eq: category } } },
-      }
+      category: { categories: { name: { eq: category } } },
+    }
     : {};
 
   const publishedFilter = params.shouldDisplayAllPosts
     ? {}
     : {
-        live: { eq: true },
-      };
+      live: { eq: true },
+    };
 
   const filter = {
     ...categoryFilter,
     ...publishedFilter,
   };
 
-  const postsListData = (await staticRequest({
-    variables: {
-      sort,
-      last,
-      filter,
-    },
-    query: gql`
-      ${POST_FRAGMENT}
-      query PostsQuery($sort: String!, $last: Float, $filter: PostsFilter) {
-        postsConnection(sort: $sort, last: $last, filter: $filter) {
-          pageInfo {
-            hasPreviousPage
-            endCursor
-          }
-          edges {
-            node {
-              ...PostFragment
+    const postsListData = (await staticRequest({
+      variables: {
+        sort,
+        last,
+        filter,
+      },
+        query: gql`
+            ${POST_FRAGMENT}
+            query PostsQuery($sort: String!, $last: Float, $filter: PostsFilter) {
+                postsConnection(sort: $sort, last: $last, filter: $filter) {
+                    pageInfo {
+                        hasPreviousPage
+                        endCursor
+                    }
+                    edges {
+                        node {
+                            ...PostFragment
+                        }
+                    }
+                }
             }
-          }
-        }
-      }
-    `,
-  })) as {
-    postsConnection: {
-      edges: Array<{
-        node: Post;
-      }>;
+        `,
+    })) as {
+      postsConnection: {
+        edges: Array<{
+          node: Post;
+        }>;
+      };
     };
-  };
 
   return postsListData.postsConnection.edges.map(postMapper);
 }
@@ -192,4 +196,27 @@ function postMapper(item: { node: Post }): Post {
     slug,
     category,
   };
+}
+
+function useLoadTina() {
+  const noop = <T>(props: any) => {
+    return {
+      data: props.data,
+      isLoading: false,
+    };
+  };
+
+  const [hook, setHook] = useState(() => noop);
+
+  useEffect(() => {
+    void (async () => {
+      if (shouldUseTinaEditor()) {
+        const { useTina } = await import('tinacms/dist/edit-state');
+
+        setHook(() => useTina);
+      }
+    });
+  }, []);
+
+  return hook;
 }

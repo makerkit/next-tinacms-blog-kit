@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import '../styles/globals.css';
 
 import ThemeProvider from '~/components/ThemeProvider';
-import { isBrowser } from '~/lib/is-browser';
+import shouldUseTinaEditor from "~/lib/should-use-tina-editor";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -29,12 +29,6 @@ function TinaWrapper(props: React.PropsWithChildren<{}>) {
   }
 
   return <>{props.children}</>;
-}
-
-function shouldUseTinaEditor() {
-  return isBrowser()
-    ? new URLSearchParams(window.location.search).has('tina')
-    : true;
 }
 
 export default MyApp;
